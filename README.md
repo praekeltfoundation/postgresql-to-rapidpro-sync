@@ -15,3 +15,5 @@ Configuration is handled using environment variables
 **RAPIDPRO_HOST** - The hostname of the rapidpro instance, eg. `textit.in`
 
 **RAPIDPRO_TOKEN** - The token to use to authenticate to the RapidPro API, eg. `b50c919959954e5a8c5476c2b9d671e2`
+
+**CONCURRENCY** - How many requests to make to the RapidPro API in parallel. Defaults to 1
