@@ -19,7 +19,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v3
         with:
-          python-version: pypy3.8-v7.3.9
+          python-version: pypy-3.8
       - name: Install poetry
         run: pip install poetry
       - name: Install dependancies
