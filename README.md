@@ -17,3 +17,24 @@ Configuration is handled using environment variables
 **RAPIDPRO_TOKEN** - The token to use to authenticate to the RapidPro API, eg. `b50c919959954e5a8c5476c2b9d671e2`
 
 **CONCURRENCY** - How many requests to make to the RapidPro API in parallel. Defaults to 1
+
+## Development
+This project uses [poetry](https://python-poetry.org/docs/). Start by installing it first.
+
+`poetry install` will install all the dependancies.
+
+`poetry shell` to enter a shell inside the created virtual environment.
+
+There are various auto formatters and linters used in this project, so after making any changes run them first:
+
+```
+black .
+isort .
+mypy .
+flake8
+```
+
+Then you can run the unit tests:
+```
+pytest
+```
