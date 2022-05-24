@@ -12,6 +12,7 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.10"
 psycopg = {extras = ["c"], version = "^3.0.14"}
+aiohttp = {extras = ["speedups"], version = "^3.8.1"}
 
 [tool.poetry.dev-dependencies]
 black = "^22.3.0"
@@ -21,6 +22,7 @@ flake8 = "^4.0.1"
 pytest = "^7.1.2"
 pytest-cov = "^3.0.0"
 pytest-asyncio = "^0.18.3"
+pytest-aiohttp = "^1.0.4"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
