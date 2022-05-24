@@ -1,4 +1,4 @@
-from typing import Any, AsyncIterator
+from typing import AsyncIterator
 
 from psycopg import AsyncConnection
 from psycopg.sql import SQL, Composed, Identifier
@@ -13,7 +13,7 @@ def get_all_rows_query(table: str) -> Composed:
 
 async def get_all_rows(
     connection: AsyncConnection, table: str
-) -> AsyncIterator[dict[str, Any]]:
+) -> AsyncIterator[dict[str, str]]:
     """
     Async iterator that returns all the rows of the table, as dictionaries
     """
