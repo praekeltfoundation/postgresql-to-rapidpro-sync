@@ -4,7 +4,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     services:
-      postgresql:
+      postgres:
         image: postgres:14-bullseye
         env:
           POSTGRES_PASSWORD: postgres
