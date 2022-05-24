@@ -34,7 +34,6 @@ async def test_main(
         We need to mock with an async function, that returns an async context manager,
         that returns the database connection, in order to mirror the psycopg API
         """
-        assert dsn == ""
 
         @asynccontextmanager
         async def connect():
