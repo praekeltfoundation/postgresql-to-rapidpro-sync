@@ -18,8 +18,12 @@ Configuration is handled using environment variables
 
 **CONCURRENCY** - How many requests to make to the RapidPro API in parallel. Defaults to 1
 
+**URN_TYPE** - The type of URN that we're using to lookup the contact, eg. "whatsapp". The table will need a column named this, whose values are the URNs of the contacts
+
 ## Development
 This project uses [poetry](https://python-poetry.org/docs/). Start by installing it first.
+
+You will also need a PostgreSQL instance running, you can use the DATABASE_DSN environment variable to tell the tests how to find and connect to this instance.
 
 `poetry install` will install all the dependancies.
 
