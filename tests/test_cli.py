@@ -4,7 +4,7 @@ from unittest.mock import MagicMock, patch
 
 from psycopg import AsyncConnection
 
-from sync.cli import main
+from sync.cli import async_main
 from tests.test_query import create_test_database_data
 from tests.test_rapidpro import TestClient
 
@@ -43,7 +43,7 @@ async def test_main(
         return connect()
 
     mock_connection.connect = mock_connect
-    await main()
+    await async_main()
     assert fake_whatsapp.app is not None
     [r1, r2] = sorted(fake_whatsapp.app["requests"], key=lambda r: r.query["urn"])
     assert r1.query == {"urn": "whatsapp:27820001001"}
