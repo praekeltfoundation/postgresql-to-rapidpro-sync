@@ -1,5 +1,7 @@
 import asyncio
+from logging import INFO, basicConfig, getLogger
 from os import environ
+from time import monotonic
 
 from aiohttp import ClientSession
 from psycopg import AsyncConnection
@@ -8,20 +10,25 @@ from sync.config import Config
 from sync.query import get_all_rows
 from sync.rapidpro import create_session, update_contact
 
+logger = getLogger(__name__)
+basicConfig(level=INFO)
+
 
 async def rapidpro_worker(
     config: Config, session: ClientSession, queue: asyncio.Queue
 ) -> None:
-    while True:
-        row = await queue.get()
-        urn_value = row.pop(config.urn_type)
-        await update_contact(
-            session=session, urn_type=config.urn_type, urn_value=urn_value, fields=row
-        )
-        queue.task_done()
+    logger.info("Started worker")
+    async with session as s:
+        while True:
+            row = await queue.get()
+            urn_value = row.pop(config.urn_type)
+            await update_contact(
+                session=s, urn_type=config.urn_type, urn_value=urn_value, fields=row
+            )
+            queue.task_done()
 
 
-async def main():
+async def async_main():
     config = Config.from_environment(environ)
     queue = asyncio.Queue(maxsize=config.concurrency)
     session = await create_session(
@@ -36,15 +43,29 @@ async def main():
         for _ in range(config.concurrency)
     ]
 
+    start = monotonic()
+    count = 0
     async with await AsyncConnection.connect(config.database_dsn) as conn:
         async for row in get_all_rows(connection=conn, table=config.database_table):
             await queue.put(row)
-    await queue.join()
+            count += 1
+            if monotonic() - start > 1:
+                logger.info(
+                    "Processing %s contacts per second",
+                    (count - queue.qsize()) / (monotonic() - start),
+                )
+                count = 0
+                start = monotonic()
 
+    await queue.join()
     for worker_task in worker_tasks:
         worker_task.cancel()
     await asyncio.gather(*worker_tasks, return_exceptions=True)
 
 
+def main():
+    asyncio.run(async_main())
+
+
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
