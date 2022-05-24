@@ -1,17 +1,6 @@
-from os import environ
-from typing import AsyncGenerator
-
 from psycopg import AsyncConnection
-from pytest import fixture
 
 from sync.query import get_all_rows, get_all_rows_query
-
-
-@fixture
-async def database_connection() -> AsyncGenerator[AsyncConnection, None]:
-    async with await AsyncConnection.connect(environ.get("DATABASE_DSN", "")) as aconn:
-        yield aconn
-        await aconn.rollback()
 
 
 async def create_test_database_data(database_connection: AsyncConnection) -> None:

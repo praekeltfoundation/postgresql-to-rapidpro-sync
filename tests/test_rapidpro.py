@@ -1,23 +1,6 @@
-import pytest
-from aiohttp import web
 from aiohttp.test_utils import TestClient
 
 from sync.rapidpro import create_session, update_contact
-
-
-@pytest.fixture
-async def fake_whatsapp(aiohttp_client) -> TestClient:
-    app = web.Application()
-    app["requests"] = []
-
-    async def contacts(request):
-        app["requests"].append(request)
-        # Load the body so that we can assert on it
-        await request.text()
-        return web.Response()
-
-    app.add_routes([web.post("/api/v2/contacts.json", contacts)])
-    return await aiohttp_client(app)
 
 
 async def test_update_contact(fake_whatsapp: TestClient):
