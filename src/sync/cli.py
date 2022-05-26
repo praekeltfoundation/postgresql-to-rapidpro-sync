@@ -21,10 +21,13 @@ async def rapidpro_worker(
     async with session as s:
         while True:
             row = await queue.get()
-            urn_value = row.pop(config.urn_type)
-            await update_contact(
-                session=s, urn_type=config.urn_type, urn_value=urn_value, fields=row
-            )
+            try:
+                urn_value = row.pop(config.urn_type)
+                await update_contact(
+                    session=s, urn_type=config.urn_type, urn_value=urn_value, fields=row
+                )
+            except Exception:
+                logger.exception("Error updating contact")
             queue.task_done()
 
 
