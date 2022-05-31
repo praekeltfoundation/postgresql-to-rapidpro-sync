@@ -1,7 +1,15 @@
 from typing import AsyncIterator
 
+import psycopg
 from psycopg import AsyncConnection
 from psycopg.sql import SQL, Composed, Identifier
+
+# Fix for Redshift
+# https://github.com/psycopg/psycopg/issues/122
+psycopg._encodings._py_codecs["UNICODE"] = "utf-8"
+psycopg._encodings.py_codecs.update(
+    (k.encode(), v) for k, v in psycopg._encodings._py_codecs.items()
+)
 
 
 def get_all_rows_query(table: str) -> Composed:
