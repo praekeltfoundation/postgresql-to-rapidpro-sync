@@ -11,6 +11,8 @@ psycopg._encodings.py_codecs.update(
     (k.encode(), v) for k, v in psycopg._encodings._py_codecs.items()
 )
 
+CURSOR_NAME = "rapidpro_sync"
+
 
 def get_all_rows_query(table: str) -> Composed:
     """
@@ -25,7 +27,7 @@ async def get_all_rows(
     """
     Async iterator that returns all the rows of the table, as dictionaries
     """
-    async with connection.cursor() as cursor:
+    async with connection.cursor(name=CURSOR_NAME) as cursor:
         await cursor.execute(get_all_rows_query(table))
         if cursor.description is None:
             raise ValueError("No column description in cursor")
