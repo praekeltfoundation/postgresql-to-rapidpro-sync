@@ -12,7 +12,7 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.10"
 psycopg = {extras = ["c"], version = "^3.0.14"}
-aiohttp = {extras = ["speedups"], version = "^3.8.1"}
+aiohttp = {extras = ["speedups"], version = "^3.8.5"}
 
 [tool.poetry.dev-dependencies]
 black = "^22.3.0"
